@@ -1,5 +1,5 @@
-# jamplate-gradle-plugin
- The gradle plugin for the jamplate pre-processor.
+# Jamplate Gradle Plugin
+ The gradle plugin for the [Jamplate Processor](https://github.com/cufyorg/jamplate-processor).
 
 ## How to apply
   Add this to your `build.gradle`
@@ -19,3 +19,20 @@
   	}
   }
   ```
+
+## How to use
+  - Apply the plugin.
+  - Create a new directory in your project's `src/main` or `src/test` directory.
+  - Create your `package` directory like you would for any `java` source code.
+  - Create a new file in that desired `package` with `.jamplate` extension.
+  - Start coding in `jamplate`.
+  - Keep in mind that the output of the processed file will be compiled as a `java` source-code.
+  - Build your project using an `IDE`, or by typing `gradle build` or `gradlew build` in the terminal.
+
+## Intellij Tips
+  - If `Intellij` did not recognize the output files and gives you an error
+    - Exit `Intellij`
+    - Delete `.idea` folder in your project
+    - Open `Intellij` again
+  - If `Intellij` do not recognize `.jamplate` extension
+    - Follow these instructions [Intellij.md](https://github.com/cufyorg/jamplate-processor/blob/master/Intellij.md)
