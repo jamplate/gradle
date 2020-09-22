@@ -14,7 +14,8 @@
   		}
   	}
   	dependencies {
-  		classpath 'org.cufy:jamplate-gradle-plugin:0.0.4'
+        //replace 'TAG' with the desired version
+  		classpath 'org.cufy:jamplate-gradle-plugin:TAG'
   	}
   }
   ```
