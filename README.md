@@ -1,8 +1,8 @@
 # Jamplate Gradle Plugin
  The gradle plugin for the [Jamplate Processor](https://github.com/cufyorg/jamplate-processor).
 
-## How to apply
-  Add this to your `build.gradle`
+## How to apply using jitpack (for `0.0.x` versions)
+  Add this to your `build.gradle`. [jitpack page](https://jitpack.io/#org.cufy/jamplate-gradle-plugin)
   ```groovy
   apply plugin: 'java'
   apply plugin: 'jamplate'
@@ -14,11 +14,20 @@
   		}
   	}
   	dependencies {
-        //replace 'TAG' with the desired version
+                  //replace 'TAG' with the desired version
   		classpath 'org.cufy:jamplate-gradle-plugin:TAG'
   	}
   }
   ```
+
+## How to apply using gradle (for `0.x.0` versions)
+   Add this to your `build.gradle`. [more instructions](https://plugins.gradle.org/plugin/org.cufy.jamplate)
+   ```groovy
+   plugins {
+        //Replace 'TAG' with the desired version
+        id 'org.cufy.jamplate' version 'TAG'
+   }
+   ```
 
 ## How to use
   - Apply the plugin.
