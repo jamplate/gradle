@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.cufy:jamplate-processor:0.0.9'
+	implementation 'org.cufy:jamplate-processor:0.0.a'
 }
 
 pluginBundle {
