@@ -31,7 +31,7 @@
 
 ## How to use
   - Apply the plugin.
-  - Create a new directory in your project's `src/main` or `src/test` directory.
+  - Create a new directory named `jamplate` in your project's `src/main` or `src/test` directory.
   - Create your `package` directory like you would for any `java` source code.
   - Create a new file in that desired `package` with `.jamplate` extension.
   - Start coding in `jamplate`.
