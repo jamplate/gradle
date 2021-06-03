@@ -5,34 +5,33 @@ plugins {
 	id "com.gradle.plugin-publish" version "0.12.0"
 }
 
-group 'org.cufy'
-version '0.0.3'
+group 'org.jamplate'
+version '0.2.0'
 
 repositories {
 	mavenCentral()
-	jcenter()
 	maven {
 		url 'https://jitpack.io'
 	}
 }
 
 dependencies {
-	implementation 'org.cufy:jamplate-processor:0.0.a'
+	implementation 'org.jamplate:processor:0.2.0-beta2'
 }
 
 pluginBundle {
-	website = 'https://cufy.org'
-	vcsUrl = 'https://github.com/cufyorg/jamplate-gradle-plugin'
+	website = 'https://jamplate.org'
+	vcsUrl = 'https://github.com/jamplate/gradle'
 	tags = ['preprocessor', 'generator']
 }
 
 gradlePlugin {
 	plugins {
 		Jamplate {
-			id = 'org.cufy.jamplate'
+			id = 'org.jamplate'
 			displayName = 'Jamplate'
 			description = 'Jamplate is a C-Style pre-processor for java'
-			implementationClass = 'org.cufy.jamplate.gradle.JamplatePlugin'
+			implementationClass = 'org.jamplate.gradle.JamplatePlugin'
 		}
 	}
 }
