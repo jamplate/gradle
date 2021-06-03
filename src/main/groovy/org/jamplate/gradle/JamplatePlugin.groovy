@@ -1,5 +1,5 @@
 /*
- *	Copyright 2020 Cufy
+ *	Copyright 2020-2021 Cufy
  *
  *	Licensed under the Apache License, Version 2.0 (the "License");
  *	you may not use this file except in compliance with the License.
@@ -139,8 +139,8 @@ class JamplatePlugin implements Plugin<Project> {
 		return string.length() <= 1 ?
 			   string.toUpperCase() :
 			   string.substring(0, 1)
-					   .toUpperCase() +
+					 .toUpperCase() +
 			   string.substring(1, string.length())
-					   .toLowerCase()
+					 .toLowerCase()
 	}
 }

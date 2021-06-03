@@ -1,5 +1,5 @@
 /*
- *	Copyright 2020 Cufy
+ *	Copyright 2020-2021 Cufy
  *
  *	Licensed under the Apache License, Version 2.0 (the "License");
  *	you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ class ProcessJamplateTask extends DefaultTask {
 		Compilation[] jamplates = environment
 				.compilationSet()
 				.stream()
-				.filter(compilation -> compilation.rootTree.document().toString().endsWith(".jamplate"))
-				.toArray(Compilation[]::new)
+				.filter({ compilation -> compilation.rootTree.document().toString().endsWith(".jamplate") })
+				.toArray({len -> new Compilation[len]})
 
 		boolean executed = Jamplate.execute(environment, jamplates)
 
