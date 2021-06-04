@@ -35,7 +35,7 @@ class ProcessJamplateTask extends DefaultTask {
 	@OutputDirectory
 	File output
 
-	Map defaultMemory
+	private Map defaultMemory
 
 	@TaskAction
 	void processJamplate() throws IOException {
