@@ -54,8 +54,10 @@ class JamplatePlugin implements Plugin<Project> {
 		this.project = project
 		project.plugins.apply JavaPlugin
 
-		this.jam('jamplate', 'main')
-		this.jam('jamplate', 'test')
+		project.extensions.add 'jamplate', JamplateExtension
+
+		this.jam 'jamplate', 'main'
+		this.jam 'jamplate', 'test'
 	}
 
 	/**
@@ -102,7 +104,7 @@ class JamplatePlugin implements Plugin<Project> {
 		Objects.requireNonNull(taskName, "taskName")
 
 		if (input.directory) {
-			//define a jamplates source set
+			//create new jamplates source set
 			SourceDirectorySet jamSourceSet =
 					factory
 							.sourceDirectorySet(
@@ -111,15 +113,24 @@ class JamplatePlugin implements Plugin<Project> {
 							)
 							.srcDir input
 
+			//register the source set
 			sourceSet.allSource.source jamSourceSet
+
+			//register the source set as a java source
 			if (allJavaSource)
 				sourceSet.allJava.source jamSourceSet
+
+			//register the folder containing the generated code as java source folder
 			sourceSet.java.srcDir output
 
+			//create the jamplate task
 			project.tasks.create(taskName, ProcessJamplateTask) {
+				JamplateExtension extension = project.extensions.getByType(JamplateExtension)
 				it.input = input
 				it.output = output
+				it.defaultMemory = extension.defaultMemory
 			}
+			//make the java compile task run after the jamplate task
 			project.tasks.named(sourceSet.compileJavaTaskName) {
 				it.dependsOn taskName
 			}

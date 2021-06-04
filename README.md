@@ -24,7 +24,7 @@ buildscript() {
 }
 ```
 
-## How to use
+### How to use
 
 - Apply the plugin.
 - Create a new directory named `jamplate` in your project's `src/main` or `src/test`
@@ -37,7 +37,18 @@ buildscript() {
 - Build your project using an `IDE`, or by typing `gradle build` or `gradlew build` in the
   terminal.
 
-## Intellij Tips
+### Configure the Default memory
+
+```gradle
+jamplate {
+    //here you can put all the default mappigns you want
+    memory 'Text', 'Value'
+    memory 'Object', '{"Key": "Value"}'
+    memory 'Array', '["item1", "item2"]'
+}
+```
+
+### Intellij Tips
 
 - If `Intellij` did not recognize the output files and gives you an error
     - Exit `Intellij`

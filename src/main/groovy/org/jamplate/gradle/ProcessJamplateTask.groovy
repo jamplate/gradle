@@ -19,6 +19,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.jamplate.diagnostic.Message
 import org.jamplate.impl.Jamplate
 import org.jamplate.impl.Meta
 import org.jamplate.impl.model.EnvironmentImpl
@@ -34,12 +35,14 @@ class ProcessJamplateTask extends DefaultTask {
 	@OutputDirectory
 	File output
 
+	Map defaultMemory
+
 	@TaskAction
 	void processJamplate() throws IOException {
-		jamplate(input, output)
+		jamplate(input, output, defaultMemory)
 	}
 
-	protected static void jamplate(File input, File output) {
+	protected static void jamplate(File input, File output, Map memoryDefaults) {
 		Objects.requireNonNull(input, "input")
 		Objects.requireNonNull(output, "output")
 
@@ -47,6 +50,7 @@ class ProcessJamplateTask extends DefaultTask {
 
 		Environment environment = new EnvironmentImpl()
 
+		environment.meta[Meta.MEMORY] = memoryDefaults
 		environment.meta[Meta.PROJECT] = input
 		environment.meta[Meta.OUTPUT] = output
 
@@ -54,22 +58,24 @@ class ProcessJamplateTask extends DefaultTask {
 
 		if (!compiled) {
 			System.err.println("Compilation Error\n")
-			environment.diagnostic.flush(true)
-			return
+			Message cause = environment.diagnostic.first()
+			environment.diagnostic.flush()
+			throw cause.exception
 		}
 
 		Compilation[] jamplates = environment
 				.compilationSet()
 				.stream()
 				.filter({ compilation -> compilation.rootTree.document().toString().endsWith(".jamplate") })
-				.toArray({len -> new Compilation[len]})
+				.toArray({ len -> new Compilation[len] })
 
 		boolean executed = Jamplate.execute(environment, jamplates)
 
 		if (!executed) {
 			System.err.println("Runtime Error\n")
-			environment.diagnostic.flush(true)
-			return
+			Message cause = environment.diagnostic.first()
+			environment.diagnostic.flush()
+			throw cause.exception
 		}
 
 		environment.diagnostic.flush()
