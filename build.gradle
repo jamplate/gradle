@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.jamplate'
-version '0.2.1-aat'
+version '0.2.0b'
 
 repositories {
 	mavenCentral()
