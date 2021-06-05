@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.jamplate'
-version '0.2.0x'
+version '0.2.2'
 
 repositories {
 	mavenCentral()
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.jamplate:processor:0.2.1'
+	implementation 'org.jamplate:processor:0.2.2'
 }
 
 pluginBundle {
