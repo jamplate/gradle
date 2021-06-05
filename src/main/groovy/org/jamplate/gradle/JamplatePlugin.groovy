@@ -129,6 +129,7 @@ class JamplatePlugin implements Plugin<Project> {
 				it.input = input
 				it.output = output
 				it.defaultMemory = extension.defaultMemory
+				it.memorySupplier = extension.memorySupplier
 			}
 			//make the java compile task run after the jamplate task
 			project.tasks.named(sourceSet.compileJavaTaskName) {

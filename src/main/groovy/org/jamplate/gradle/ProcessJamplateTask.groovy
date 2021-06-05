@@ -27,6 +27,9 @@ import org.jamplate.impl.model.FileDocument
 import org.jamplate.model.Compilation
 import org.jamplate.model.Document
 import org.jamplate.model.Environment
+import org.jamplate.model.Memory
+
+import java.util.function.Function
 
 @SuppressWarnings('GrMethodMayBeStatic')
 class ProcessJamplateTask extends DefaultTask {
@@ -35,14 +38,11 @@ class ProcessJamplateTask extends DefaultTask {
 	@OutputDirectory
 	File output
 
-	protected Map defaultMemory
+	protected Map<String, Object> defaultMemory
+	protected Function<Compilation, Memory> memorySupplier
 
 	@TaskAction
 	void processJamplate() throws IOException {
-		jamplate(input, output, defaultMemory)
-	}
-
-	protected static void jamplate(File input, File output, Map memoryDefaults) {
 		Objects.requireNonNull(input, "input")
 		Objects.requireNonNull(output, "output")
 
@@ -50,7 +50,7 @@ class ProcessJamplateTask extends DefaultTask {
 
 		Environment environment = new EnvironmentImpl()
 
-		environment.meta[Meta.MEMORY] = memoryDefaults
+		environment.meta[Meta.MEMORY] = defaultMemory
 		environment.meta[Meta.PROJECT] = input
 		environment.meta[Meta.OUTPUT] = output
 
@@ -69,7 +69,9 @@ class ProcessJamplateTask extends DefaultTask {
 				.filter({ compilation -> compilation.rootTree.document().toString().endsWith(".jamplate") })
 				.toArray({ len -> new Compilation[len] })
 
-		boolean executed = Jamplate.execute(environment, jamplates)
+		boolean executed = this.memorySupplier == null ?
+						   Jamplate.execute(environment, jamplates) :
+						   Jamplate.execute(environment, this.memorySupplier, jamplates)
 
 		if (!executed) {
 			System.err.println("Runtime Error\n")

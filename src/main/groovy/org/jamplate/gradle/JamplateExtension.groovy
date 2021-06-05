@@ -15,14 +15,42 @@
  */
 package org.jamplate.gradle
 
-class JamplateExtension {
-	Map defaultMemory = new HashMap<>()
+import org.jamplate.model.Compilation
+import org.jamplate.model.Memory
+import org.jamplate.model.Value
+import org.json.JSONObject
 
-	void memory(String address, Object value) {
+import java.util.function.Function
+
+class JamplateExtension {
+	Map<String, Object> defaultMemory = new HashMap<>()
+	Function<Compilation, Memory> memorySupplier
+
+	void memory(String address, String value) {
 		defaultMemory.put(address, value)
+	}
+
+	void memory(String address, Number number) {
+		defaultMemory.put(address, number)
+	}
+
+	void memory(String address, Value value) {
+		defaultMemory.put(address, value)
+	}
+
+	void memory(String address, List value) {
+		defaultMemory.put(address, value)
+	}
+
+	void memory(String address, Map value) {
+		defaultMemory.put(address, new JSONObject(value))
 	}
 
 	void memory(Map map) {
 		defaultMemory.putAll(map)
+	}
+
+	void replaceMemorySupplier(Function<Compilation, Memory> memorySupplier) {
+		this.memorySupplier = memorySupplier
 	}
 }
