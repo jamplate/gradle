@@ -43,8 +43,8 @@ buildscript() {
 jamplate {
     //here you can put all the default mappigns you want
     memory 'Text', 'Value'
-    memory 'Object', '{"Key": "Value"}'
-    memory 'Array', '["item1", "item2"]'
+    memory 'Object', ["Key": "Value"]
+    memory 'Array', ["item1", "item2"]
     memory 'Dynamic', { memory -> 'Dynamic Variable'}
     memory "Random", {'' + (long) (Math.random() * (1L << 60))}
     memory "Document", {'' + it.frame.instruction?.tree?.document()}
