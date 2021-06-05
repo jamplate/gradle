@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.jamplate:processor:0.2.0'
+	implementation 'org.jamplate:processor:0.2.1'
 }
 
 pluginBundle {
