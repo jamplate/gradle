@@ -18,6 +18,7 @@ package org.jamplate.gradle
 import org.jamplate.model.Compilation
 import org.jamplate.model.Memory
 import org.jamplate.model.Value
+import org.json.JSONArray
 import org.json.JSONObject
 
 import java.util.function.Function
@@ -34,8 +35,20 @@ class JamplateExtension {
 		defaultMemory.put(address, number)
 	}
 
-	void memory(String address, Value value) {
-		defaultMemory.put(address, value)
+	void memory(String address, Closure value) {
+		defaultMemory.put address, (Value) {
+			memory ->
+				Object v = value(memory)
+
+				if (v instanceof Map)
+					return new JSONObject((Map) v).toString()
+				if (v instanceof Collection)
+					return new JSONArray((Collection) v).toString()
+				if (v instanceof String)
+					return v
+
+				return String.valueOf(v)
+		}
 	}
 
 	void memory(String address, List value) {

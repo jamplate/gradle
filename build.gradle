@@ -2,11 +2,11 @@ plugins {
 	id 'groovy'
 	id 'java-gradle-plugin'
 	id 'maven-publish'
-	id "com.gradle.plugin-publish" version "0.12.0"
+	id "com.gradle.plugin-publish" version "0.15.0"
 }
 
 group 'org.jamplate'
-version '0.2.3'
+version '0.2.3x'
 
 repositories {
 	mavenCentral()
@@ -23,7 +23,17 @@ dependencies {
 pluginBundle {
 	website = 'https://jamplate.org'
 	vcsUrl = 'https://github.com/jamplate/gradle'
-	tags = ['preprocessor', 'generator']
+	description = "Jamplate is a C-Style pre-processor. Although it is a C-Style, this " +
+				  "does not mean it is following the C standard. This pre-processor has " +
+				  "almost the same expected behaviour as a standard C pre-processors with " +
+				  "some features added and some missing."
+	tags = ['preprocessor', 'generator', 'jamplate']
+
+	plugins {
+		Jamplate {
+			displayName = "Jamplate"
+		}
+	}
 }
 
 gradlePlugin {
@@ -31,7 +41,7 @@ gradlePlugin {
 		Jamplate {
 			id = 'org.jamplate'
 			displayName = 'Jamplate'
-			description = 'Jamplate is a C-Style pre-processor for java'
+			description = 'Jamplate Gradle Plugin is a plugin executing Jamplate Processor for Java.'
 			implementationClass = 'org.jamplate.gradle.JamplatePlugin'
 		}
 	}

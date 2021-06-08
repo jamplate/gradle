@@ -1,6 +1,7 @@
 # Jamplate Gradle Plugin [![](https://jitpack.io/v/org.jamplate/gradle.svg)](https://jitpack.io/#org.jamplate/gradle)
 
-The gradle plugin for [Jamplate](https://github.com/jamplate/processor).
+The gradle plugin for [Jamplate](https://github.com/jamplate/processor). For more
+information please visit: [jamplate.org](https://jamplate.org)
 
 ## How to apply using jitpack
 
@@ -43,11 +44,11 @@ buildscript() {
 jamplate {
     //here you can put all the default mappigns you want
     memory 'Text', 'Value'
-    memory 'Object', ["Key": "Value"]
-    memory 'Array', ["item1", "item2"]
-    memory 'Dynamic', { memory -> 'Dynamic Variable'}
-    memory "Random", {'' + (long) (Math.random() * (1L << 60))}
-    memory "Document", {'' + it.frame.instruction?.tree?.document()}
+    memory 'Object', [ "Key": "Value" ]
+    memory 'Array', [ "item1", "item2" ]
+    memory 'Dynamic', { memory -> 'Dynamic Variable' }
+    memory "Random", { (long) (Math.random() * (1L << 60)) }
+    memory "Document", { it.frame.instruction?.tree?.document() }
 }
 ```
 
