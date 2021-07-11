@@ -34,11 +34,6 @@ class ProcessJamplateTask extends DefaultTask {
 
 	protected Unit unit
 
-	@Override
-	String getGroup() {
-		return "jamplate"
-	}
-
 	@TaskAction
 	void processJamplate() throws IOException {
 		Objects.requireNonNull(input, "input")
