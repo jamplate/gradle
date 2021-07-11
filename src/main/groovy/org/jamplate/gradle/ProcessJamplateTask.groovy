@@ -19,17 +19,11 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.jamplate.diagnostic.Message
-import org.jamplate.impl.Jamplate
-import org.jamplate.impl.Meta
-import org.jamplate.impl.model.EnvironmentImpl
-import org.jamplate.impl.model.FileDocument
-import org.jamplate.model.Compilation
+import org.jamplate.impl.document.FileDocument
 import org.jamplate.model.Document
-import org.jamplate.model.Environment
-import org.jamplate.model.Memory
+import org.jamplate.unit.Unit
 
-import java.util.function.Function
+import java.util.stream.Collectors
 
 @SuppressWarnings('GrMethodMayBeStatic')
 class ProcessJamplateTask extends DefaultTask {
@@ -38,8 +32,12 @@ class ProcessJamplateTask extends DefaultTask {
 	@OutputDirectory
 	File output
 
-	protected Map<String, Object> defaultMemory
-	protected Function<Compilation, Memory> memorySupplier
+	protected Unit unit
+
+	@Override
+	String getGroup() {
+		return "jamplate"
+	}
 
 	@TaskAction
 	void processJamplate() throws IOException {
@@ -48,38 +46,20 @@ class ProcessJamplateTask extends DefaultTask {
 
 		Document[] documents = FileDocument.hierarchy(input)
 
-		Environment environment = new EnvironmentImpl()
+		Unit unit = this.unit
 
-		environment.meta[Meta.MEMORY] = defaultMemory
-		environment.meta[Meta.PROJECT] = input
-		environment.meta[Meta.OUTPUT] = output
-
-		boolean compiled = Jamplate.compile(environment, documents)
-
-		if (!compiled) {
-			System.err.println("Compilation Error\n")
-			Message cause = environment.diagnostic.first()
-			environment.diagnostic.flush()
-			throw cause.exception
-		}
-
-		Compilation[] jamplates = environment
-				.compilationSet()
-				.stream()
-				.filter({ compilation -> compilation.rootTree.document().toString().endsWith(".jamplate") })
-				.toArray({ len -> new Compilation[len] })
-
-		boolean executed = this.memorySupplier == null ?
-						   Jamplate.execute(environment, jamplates) :
-						   Jamplate.execute(environment, this.memorySupplier, jamplates)
-
-		if (!executed) {
-			System.err.println("Runtime Error\n")
-			Message cause = environment.diagnostic.first()
-			environment.diagnostic.flush()
-			throw cause.exception
-		}
-
-		environment.diagnostic.flush()
+		unit.initialize(documents) &&
+		unit.parse(documents) &&
+		unit.analyze(documents) &&
+		unit.compile(documents) &&
+		unit.execute(
+				documents.toList()
+						 .stream()
+						 .filter({
+							 d -> d.toString().endsWith(".jamplate")
+						 })
+						 .collect(Collectors.toList())
+		)
+		unit.diagnostic()
 	}
 }

@@ -40,15 +40,30 @@ buildscript() {
 
 ### Configure the Default memory
 
-```gradle
+```groovy
+//utility imports
+import static org.jamplate.glucose.internal.util.Values.*
+import static org.jamplate.impl.unit.Action.*
+import static org.jamplate.util.Specs.*
+
 jamplate {
-    //here you can put all the default mappigns you want
-    memory 'Text', 'Value'
-    memory 'Object', [ "Key": "Value" ]
-    memory 'Array', [ "item1", "item2" ]
-    memory 'Dynamic', { memory -> 'Dynamic Variable' }
-    memory "Random", { (long) (Math.random() * (1L << 60)) }
-    memory "Document", { it.frame.instruction?.tree?.document() }
+	//with the method `unit`, you create a new task for the module you give it to it
+	//the method will return the created unit object for that module  
+	unit('main').spec.add(listener({ event ->
+		if (event.action == PRE_EXEC) {
+			//here you can put all the default mappings you want
+			event.memory.set 'Text', text('Value')
+			event.memory.set 'Object', object(["Key": "Value"])
+			event.memory.set 'Array', array(["item1", "item2"])
+			event.memory.set 'Dynamic', { memory -> 'Dynamic Variable' }
+			event.memory.set "Random", { '' + (long) (Math.random() * (1L << 60)) }
+			event.memory.set "Document", { '' + it.frame.instruction?.tree?.document() }
+		}
+	}))
+    //with this method, the unit output will be treated as generated java source
+    java('main')
+    //with this method, the unit output will be treated as generated text
+    source('main')
 }
 ```
 
